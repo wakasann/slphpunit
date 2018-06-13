@@ -16,3 +16,28 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function ($api) {
+    $api->get('/', function() {
+        return ['Fruits' => 'Delicious and healthy!'];
+    });
+    $api->get('/fruits','App\Http\Controllers\FruitsController@index');
+    $api->get('/fruit/{id}','App\Http\Controllers\FruitsController@show');
+
+    $api->post('authenticate', 'App\Http\Controllers\AuthenticateController@authenticate');
+    $api->post('logout', 'App\Http\Controllers\AuthenticateController@logout');
+    $api->get('token', 'App\Http\Controllers\AuthenticateController@getToken');
+
+    $api->group([
+        'middleware' => [
+            'api.auth',
+            'cors'
+        ],
+    ], function ($api) {
+        $api->post('fruits', 'App\Http\Controllers\FruitsController@store');
+        $api->delete('fruits/{id}', 'App\Http\Controllers\FruitsController@destroy');
+    });
+
+});

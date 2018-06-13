@@ -9,7 +9,9 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
+        <!-- testsuites 节点 -->
         <testsuite name="Feature">
+            <!-- directory:存放单元测试类目录,suffix:值为*Test.php,表示测试directory文件夹下以*Test.php结尾的文件 -->
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
 
